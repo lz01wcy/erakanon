@@ -1,0 +1,220 @@
+@ABLUP0
+DRAWLINE
+IF ABL:0 >= 5
+	PRINTW 既にMAXです。
+	RETURN 0
+ENDIF
+
+;条件別にＯＫかダメかを記録する
+I = 0
+J = 0
+K = 0
+L = 0
+
+IF ABL:0 == 0
+	IF TALENT:10 == 0
+		A = 10
+	ELSE
+		A = 1
+	ENDIF
+	B = 10
+	C = 300
+	D = 200
+ELSEIF ABL:0 == 1
+	IF TALENT:10 == 0
+		A = 150
+	ELSE
+		A = 10
+	ENDIF
+	B = 100
+	C = 1000
+	D = 1200
+ELSEIF ABL:0 == 2
+	IF TALENT:10 == 0
+		A = 1000
+	ELSE
+		A = 50
+	ENDIF
+	B = 800
+	C = 2000
+	D = 3000
+ELSEIF ABL:0 == 3
+	IF TALENT:10 == 0
+		A = 3000
+	ELSE
+		A = 600
+	ENDIF
+	B = 3000
+	C = 0
+	D = 0
+	;一線越えない
+	IF TALENT:27
+		TIMES A , 2.00
+		TIMES B , 2.00
+	ENDIF
+ELSEIF ABL:0 == 4
+	IF TALENT:10 == 0
+		A = 8000
+	ELSE
+		A = 3000
+	ENDIF
+	B = 15000
+	C = 0
+	D = 0
+	;一線越えない
+	IF TALENT:27
+		TIMES A , 3.00
+		TIMES B , 3.00
+	ENDIF
+ENDIF
+
+;気丈
+IF TALENT:12
+	TIMES A , 3.00
+	TIMES B , 2.00
+	TIMES C , 1.50
+	TIMES D , 1.50
+ENDIF
+
+;生意気
+IF TALENT:16
+	TIMES A , 1.50
+	TIMES B , 2.00
+	TIMES D , 1.50
+ENDIF
+;素直
+IF TALENT:13
+	TIMES A , 0.50
+	TIMES B , 0.50
+	TIMES D , 0.50
+ENDIF
+;恋慕
+IF TALENT:13
+	TIMES B , 0.50
+ENDIF
+
+;ＬＶ４から５に上げるときは異常経験必要（素質：[臆病][素直][妄信]なら無視できる）
+IF ABL:0 == 4 && TALENT:10 == 0 && TALENT:13 == 0 && TALENT:86 == 0
+	PRINTS EXPNAME:50
+	PRINTL あり、かつ
+	IF EXP:50 == 0
+		;異常経験がない
+		I |= 2
+		J |= 2
+		K |= 2
+	ENDIF
+ENDIF
+
+;恐怖の珠で上げる
+SIF JUEL:10 < A
+	I |= 1
+
+PRINTFORM [0] - %PALAMNAME:10%の珠×{A}……
+IF I == 0
+	PRINT ＯＫ
+ELSE
+	SIF I & 1
+		PRINT 珠不足 
+	SIF I & 2
+		PRINT 経験不足 
+ENDIF
+PRINTL 
+
+;恭順の珠で上げる
+SIF JUEL:4 < B
+	J |= 1
+
+PRINTFORM [1] - %PALAMNAME:4%の珠×{B}……
+
+IF J == 0
+	PRINT ＯＫ
+ELSE
+	SIF J & 1
+		PRINT 珠不足 
+	SIF J & 2
+		PRINT 経験不足 
+ENDIF
+PRINTL 
+
+IF C > 0
+	;欲情の珠で上げる
+	SIF JUEL:5 < C
+		K |= 1
+
+	PRINTFORM [2] - %PALAMNAME:5%の珠×{C}……
+
+	IF K == 0
+		PRINT ＯＫ
+	ELSE
+		SIF K & 1
+			PRINT 珠不足 
+		SIF K & 2
+			PRINT 経験不足 
+	ENDIF
+	PRINTL 
+ELSE
+	K = 256
+ENDIF
+
+IF D > 0
+	;屈服の珠で上げる
+	SIF JUEL:6 < D
+		L |= 1
+
+	PRINTFORM [3] - %PALAMNAME:6%の珠×{C}……
+
+	IF L == 0
+		PRINT ＯＫ
+	ELSE
+		SIF L & 1
+			PRINT 珠不足 
+		SIF L & 2
+			PRINT 経験不足 
+	ENDIF
+	PRINTL 
+ELSE
+	L = 256
+ENDIF
+
+PRINTL [100] - やめる
+
+INPUT
+IF (RESULT < 0 || RESULT > 3) && RESULT != 100
+	RESTART
+ELSEIF I != 0 && RESULT == 0
+	PRINTL 条件を満たしていません。
+	RESTART
+ELSEIF J != 0 && RESULT == 1
+	PRINTL 条件を満たしていません。
+	RESTART
+ELSEIF K == 256 && RESULT == 2
+	RESTART
+ELSEIF K != 0 && RESULT == 2
+	PRINTL 条件を満たしていません。
+	RESTART
+ELSEIF L == 256 && RESULT == 3
+	RESTART
+ELSEIF L != 0 && RESULT == 3
+	PRINTL 条件を満たしていません。
+	RESTART
+ELSEIF RESULT == 100
+	RETURN 0
+ENDIF
+
+ABL:0 += 1
+
+IF RESULT == 0
+	JUEL:10 -= A
+ELSEIF RESULT == 1
+	JUEL:4 -= B
+ELSEIF RESULT == 2
+	JUEL:5 -= C
+ELSEIF RESULT == 3
+	JUEL:6 -= D
+ENDIF
+
+PRINTS ABLNAME:0
+PRINT のレベルが
+PRINTV ABL:0
+PRINTW になりました。
+

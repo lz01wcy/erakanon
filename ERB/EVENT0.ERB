@@ -1,0 +1,9 @@
+@EVENTTURNEND
+#LATER
+
+IF ASSI >= 0
+	IF TALENT:ASSI:90 && ITEM:21 == 0
+		PRINTW [妖狐]の効果で媚薬を手に入れました。
+		ITEM:21 = 1
+	ENDIF
+ENDIF
