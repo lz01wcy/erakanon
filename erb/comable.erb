@@ -1,0 +1,353 @@
+@COM_ABLE1
+;クンニ実行判定
+;性器が汚れているとMASTERの場合クンニはできない（愛液のよごれはＯＫ）
+SIF STAIN:3 >= 2 && ASSIPLAY == 0
+	RETURN 0
+;性器が汚れており、汚臭敏感で従順3以下のASSIの場合クンニはできない（愛液のよごれはＯＫ）
+IF STAIN:3 >= 2 && ASSIPLAY
+	SIF ABL:ASSI:0 <= 3 && TALENT:ASSI:61
+		RETURN 0
+ENDIF
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+RETURN 1
+
+@COM_ABLE2
+;アナル愛撫実行判定
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合アナル愛撫はできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE3
+;自慰実行判定
+;従順3以下・レズっ気3以下のASSIの場合自慰はできない（小悪魔ならＯＫ）
+IF EXP:0 == 0 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:87 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE4
+;フェラする実行判定
+;性器が汚れているとMASTERの場合フェラするはできない（愛液、ＰのよごれはＯＫ）
+SIF STAIN:2 >= 4 && ASSIPLAY == 0
+	RETURN 0
+;性器が汚れており、汚臭敏感で従順3以下のASSIの場合フェラはできない（愛液，ＰのよごれはＯＫ）
+IF STAIN:2 >= 4 && ASSIPLAY
+	SIF ABL:ASSI:0 <= 3 && TALENT:ASSI:61
+		RETURN 0
+ENDIF
+;オトコかふたなりじゃないとダメ
+SIF TALENT:121 == 0 && TALENT:122 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE10
+;ローター実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:0 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE11
+;バイブ実行判定
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:1 == 0 && NOITEM == 0
+	RETURN 0
+;処女で、従順4以下・レズっ気4以下のASSIの場合バイブはできない（サドならＯＫ）
+IF EXP:0 == 0 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合バイブはできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+
+RETURN 1
+
+@COM_ABLE12
+;Ｅマッサージャ実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:2 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE13
+;アナルバイブ実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:3 == 0 && NOITEM == 0
+	RETURN 0
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合アナルバイブはできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE20
+;正常位実行判定
+;バイブ挿入中はダメ
+SIF TEQUIP:1
+	RETURN 0
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+;調教者がオトコ、ふたなり、もしくはペニスバンドがないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0 && ITEM:PBAND == 0
+	RETURN 0
+;処女で、従順4以下・レズっ気4以下のASSIの場合正常位はできない（サドならＯＫ）
+IF EXP:0 == 0 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合正常位はできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE21
+;背後位実行判定
+;バイブ挿入中はダメ
+SIF TEQUIP:1
+	RETURN 0
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+;調教者がオトコ、ふたなり、もしくはペニスバンドがないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0 && ITEM:PBAND == 0
+	RETURN 0
+;処女で、従順4以下・レズっ気4以下のASSIの場合背後位はできない（サドならＯＫ）
+IF EXP:0 == 0 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合背後位はできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE22
+;アナルセックス実行判定
+;アナルバイブ挿入中はダメ
+SIF TEQUIP:3
+	RETURN 0
+;調教者がオトコ、ふたなり、もしくはペニスバンドがないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0 && ITEM:PBAND == 0
+	RETURN 0
+;潤滑不足で、従順4以下・レズっ気4以下のASSIの場合正常位はできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+;一定のＡ経験が必要
+SIF EXP:1 < EXPLV:3
+	RETURN 0
+
+RETURN 1
+
+@COM_ABLE31
+;フェラチオ実行判定
+;調教者がオトコかふたなりじゃないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE32
+;パイズリ実行判定
+;[巨乳]じゃないとダメ
+SIF TALENT:110 == 0
+	RETURN 0
+;調教者がオトコかふたなりじゃないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE33
+;素股実行判定
+;潤滑が高くないとダメ
+SIF PALAM:3 < 2000
+	RETURN 0
+;調教者がオトコかふたなりじゃないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE34
+;騎乗位実行判定
+;バイブ挿入中はダメ
+SIF TEQUIP:1
+	RETURN 0
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+;調教者がオトコかふたなりじゃないとダメ
+SIF TALENT:PLAYER:121 == 0 && TALENT:PLAYER:122 == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE40
+;スパンキング実行判定
+;従順4以下・レズっ気4以下のASSIの場合スパンキングはできない（サドならＯＫ）
+IF ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE41
+;鞭実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:10 == 0 && NOITEM == 0
+	RETURN 0
+;従順4以下・レズっ気4以下のASSIの場合鞭はできない（サドならＯＫ）
+IF ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE42
+;針実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:11 == 0 && NOITEM == 0
+	RETURN 0
+;従順5・レズっ気5・サドでないとダメ
+IF ASSIPLAY
+	SIF ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4 || TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE50
+;ローション実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:20 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE51
+;媚薬実行判定
+;アイテムを持っているか、アイテムなし設定でないとダメ
+SIF ITEM:21 == 0 && NOITEM == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE60
+;助手にキス実行判定
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+RETURN 1
+
+@COM_ABLE61
+;クンニ強制実行判定
+;調教者がオトコだとダメ
+SIF TALENT:PLAYER:122
+	RETURN 0
+RETURN 1
+
+@COM_ABLE62
+;シックスナイン実行判定
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+;欲望3以下・レズっ気3以下のASSIの場合シックスナインはできない（小悪魔、相性良好ならＯＫ）
+R = NO:PLAYER
+IF ASSIPLAY
+	SIF (ABL:ASSI:1 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:87 == 0 && RELATION:R < 150
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE63
+;貝あわせ実行判定
+;オトコ・ふたなりだとダメ
+SIF TALENT:121 || TALENT:122
+	RETURN 0
+;調教者がオトコだとダメ
+SIF TALENT:PLAYER:121 || TALENT:PLAYER:122
+	RETURN 0
+;欲望3以下の場合貝あわせはできない（小悪魔、相性良好ならＯＫ）
+R = NO:PLAYER
+IF ASSIPLAY
+	SIF ABL:ASSI:1 <= 3 && TALENT:ASSI:87 == 0 && RELATION:R < 150
+		RETURN 0
+ENDIF
+RETURN 1
+
+@COM_ABLE64
+;二本刺し実行判定
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+;オトコだとダメ
+SIF TALENT:122
+	RETURN 0
+A = 0
+;MASTERがオトコ、ふたなり
+SIF TALENT:MASTER:121 || TALENT:MASTER:122
+	A += 1
+;ASSIがオトコ、ふたなり
+SIF TALENT:ASSI:121 || TALENT:ASSI:122
+	A += 1
+;ペニスバンドとあわせて二本ないとだめ
+SIF A + ITEM:PBAND < 2
+	RETURN 0
+;処女で、従順4以下・レズっ気4以下のASSIの場合二本刺しはできない（サドならＯＫ）
+IF EXP:0 == 0 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 4 || ABL:ASSI:9 <= 4) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+;潤滑不足で、従順3以下・レズっ気3以下のASSIの場合二本刺しはできない（サドならＯＫ）
+IF PALAM:3 < PALAMLV:2 && ASSIPLAY
+	SIF (ABL:ASSI:0 <= 3 || ABL:ASSI:9 <= 3) && TALENT:ASSI:83 == 0
+		RETURN 0
+ENDIF
+
+;一定のＡ経験が必要
+SIF EXP:1 < EXPLV:3
+	RETURN 0
+
+RETURN 1
+
+@COM_ABLE65
+;助手を犯す実行判定
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+;助手がオトコだとダメ
+SIF TALENT:PLAYER:122
+	RETURN 0
+;オトコ、ふたなり、もしくはペニスバンドがないとダメ
+SIF TALENT:121 == 0 && TALENT:122 == 0 && ITEM:PBAND == 0
+	RETURN 0
+RETURN 1
+
+@COM_ABLE66
+;Ｗフェラ実行判定
+;助手じゃないとダメ
+SIF PLAYER != ASSI
+	RETURN 0
+;主人がオトコかふたなりじゃないとダメ
+SIF TALENT:MASTER:121 == 0 && TALENT:MASTER:122 == 0
+	RETURN 0
+;助手が【魅惑】か【謎の魅力】じゃないとダメ
+SIF TALENT:ASSI:91 == 0 && TALENT:ASSI:92 == 0
+	RETURN 0
+;助手が奉仕精神ＬＶ３以上、技巧ＬＶ３以上じゃないとダメ
+SIF ABL:ASSI:2 < 3 || ABL:ASSI:6 < 3
+	RETURN 0
+RETURN 1
